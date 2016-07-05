@@ -1,6 +1,11 @@
 <h4>You must be logged in to add or edit scenes and branches</h4>
-<h4>In order to edit scene content, you must be the scene author</h4>
+{% if not author %}
+	<h4>In order to edit scene content, you must be the scene author</h4>
+	<h3>That scene was written by {{ scene.user.username }} </h3>
+{% endif %}
+
 <a href="/erotica/login/">Log in</a>
+
 {% if scene %}
 	<a href="/erotica/{{ scene.id }}/">Return to scene</a>
 {% endif %}

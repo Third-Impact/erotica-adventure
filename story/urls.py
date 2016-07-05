@@ -12,7 +12,9 @@ urlpatterns = [
     
     url(r'^new_scene/$', views.SceneCreateView.as_view(), name='new_scene'),
     url(r'^(?P<pk>[0-9]+)/edit/$', views.SceneEditView.as_view(), name='edit_scene'),
-    
+
+    url(r'^(?P<pk>[0-9]+)/branch/$', views.BranchCreateView.as_view(), name='branch'),
+
     url(r'^permission/$', views.permission_redirect, name='permission'),
     url(r'^about/', views.about, name='about'),
     
