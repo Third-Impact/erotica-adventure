@@ -209,18 +209,25 @@ from django.forms import modelformset_factory
 class BranchCreateView(generic.edit.CreateView):
 	model = Branch
 	# BranchFormSet = modelformset_factory(Branch, fields=('description', 'to_scene', 'from_scene'))
-
 	login_url = '/erotica/permission/'
-	#fields = ['from_scene', 'to_scene', 'description']
+
 	form_class = BranchForm
 	template_name = 'branch_form.html'
+	
+
+	def get_form_contents(self, request, form):
+		querytext = "user_id=" + str(request.user.id) + " or closed=False"
+		valid_scenes = Scene.objects.extra(where=[querytext])
+		from_scene = Scene.objects.get(pk=self.kwargs['pk'])
+		return {'form': form, 'scenes':valid_scenes, 'defval':from_scene}
 
 	def get(self, request, *args, **kwargs):
 		from_scene = Scene.objects.get(pk=self.kwargs['pk'])
 		default_values = {'from_scene': from_scene}
 		form = self.form_class(initial=default_values)
+		content = self.get_form_contents(request, form)
 		# formset = self.BranchFormSet(queryset=Scene.objects.filter(user=request.user))
-		return render(request, self.template_name, {'form': form})
+		return render(request, self.template_name, content)
 
 	def post(self, request, *args, **kwargs):
 		form = self.form_class(request.POST)
@@ -242,9 +249,11 @@ class BranchCreateView(generic.edit.CreateView):
 			
 			else:
 				form.add_error(field=None, error="A branch can only be created to an open scene or one you have written")
-				return render(request, self.template_name, {'form': form})
+				content = self.get_form_contents(request, form)
+				return render(request, self.template_name, content)
 
-		return render(request, self.template_name, {'form': form})		
+		content = self.get_form_contents(request, form)
+		return render(request, self.template_name, content)		
 
 def permission_redirect(request):
 	template_name = 'scene_permission.html'
