@@ -1,0 +1,24 @@
+<h1>Edit Scene</h1>
+{% if scene.closed %}
+	<p>The scene is currently still closed</p>
+{% else %}
+	<p>The scene has been opened</p>
+{% endif %}
+
+
+<form action="" method="post">{% csrf_token %}
+    {{ form }}
+    <input type="submit" value="edit scene" />
+</form>
+
+{% if scene.can_be_open %}
+	<p>The scene meets all requirements to be opened</p>
+{% else %}
+	<p>The scene does not yet meet the requirements to be opened</p>
+{% endif %}
+
+{% if scene.can_be_end %}
+	<p>This scene could potentially be an endpoint</p>
+{% else %}
+	<p>This scene is not configured be be an endpoint</p>
+{% endif %}

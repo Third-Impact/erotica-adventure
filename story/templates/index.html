@@ -1,0 +1,13 @@
+<h1>Starting points </h1>
+{% if scenes %}
+    <ul>
+    {% for scene in scenes %}
+        <li><a href="/erotica/{{ scene.id }}/">Follow me</a></li>
+        <p>{{ scene.story_text|truncatechars:50 }}</p>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>This shouldnt asppear.</p>
+{% endif %}
+<a href="/erotica/new_scene/">Create a new scene></a>
+<a href="/erotica/login/">Log in</a>

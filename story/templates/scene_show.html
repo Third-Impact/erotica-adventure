@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<h1>Show page</h1>
+<!-- <p>{{ scene.story_text }}</p> -->
+<div>
+	{% block story %}
+	{% endblock story %}
+</div>
+{% if scene.closed %}
+	<p>This scene is currently closed</p>
+{% else %}
+	<p>This scene is open</p>
+{% endif %}
+<ul>
+{% for branch in branches %}
+	<li><a href="/erotica/{{ branch.to_scene_id }}/">{{branch.description}}</a></li>
+{% endfor %}
+</ul>
+<a href="/erotica/{{ scene.id }}/edit">Edit this scene</a>
+<h4>Scene written by {{ scene.user.username }} </h4>
+<a href="/erotica/logout/"> Log out </a>
