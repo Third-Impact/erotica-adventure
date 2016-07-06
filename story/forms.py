@@ -60,7 +60,7 @@ class BranchForm(forms.ModelForm):
 		if scene_from.end_point and not (scene_to.save_point or scene_to.id == 1):
 			raise forms.ValidationError(
 				"An end point can only branch to a save point or the origin"
-				) 
+				)
 
 	class Meta:
 		fields = ('from_scene', 'to_scene', 'description')

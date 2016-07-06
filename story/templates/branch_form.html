@@ -5,7 +5,6 @@
     <div>
     	{{ form.from_scene.errors }}
     	{{ form.from_scene.label_tag }}
-    	<!-- <label for="{{ form.from_scene.id_for_from_scene }}"> -->
     		<select name="from_scene">
     			{% for scene in scenes %}
     				<option value="{{ scene.id }}"
@@ -17,19 +16,18 @@
     				</option>
     			{% endfor %}
     		</select>
-    	<!-- </label> -->
+    	</label>
     </div>
 
     <div>
     	{{ form.to_scene.errors }}
     	{{ form.to_scene.label_tag }}
-    	<!-- <label for="{{ form.from_scene.id_for_from_scene }}"> -->
     		<select name="to_scene">
+    			<option value="" selected="selected">---</option>
     			{% for scene in scenes %}
     				<option value="{{ scene.id }}">{{ scene.story_text|truncatechars:100 }}</option>
     			{% endfor %}
     		</select>
-    	<!-- </label> -->
     </div>
 
     {{ form.description.errors }}

@@ -204,30 +204,31 @@ class SceneEditView(generic.edit.UpdateView):
 		#check if scene could be opened
 		return True
 
-from django.forms import modelformset_factory
 @method_decorator(login_required, name='dispatch')
 class BranchCreateView(generic.edit.CreateView):
 	model = Branch
-	# BranchFormSet = modelformset_factory(Branch, fields=('description', 'to_scene', 'from_scene'))
 	login_url = '/erotica/permission/'
-
 	form_class = BranchForm
 	template_name = 'branch_form.html'
 	
-
 	def get_form_contents(self, request, form):
 		querytext = "user_id=" + str(request.user.id) + " or closed=False"
 		valid_scenes = Scene.objects.extra(where=[querytext])
 		from_scene = Scene.objects.get(pk=self.kwargs['pk'])
-		return {'form': form, 'scenes':valid_scenes, 'defval':from_scene}
+		# content = form.generate_choices(request.user, pk=self.kwargs['pk'])
+		# content['form'] = form
+		return {'form': form, 'defval':from_scene, 'scenes':valid_scenes}
 
 	def get(self, request, *args, **kwargs):
 		from_scene = Scene.objects.get(pk=self.kwargs['pk'])
 		default_values = {'from_scene': from_scene}
 		form = self.form_class(initial=default_values)
+		# self.generate_choices(request.user)
 		content = self.get_form_contents(request, form)
-		# formset = self.BranchFormSet(queryset=Scene.objects.filter(user=request.user))
-		return render(request, self.template_name, content)
+		if from_scene.closed == False or from_scene.user == request.user:
+			return render(request, self.template_name, content)
+		else:
+			return render(request, 'scene_permission.html', {'scene': from_scene})
 
 	def post(self, request, *args, **kwargs):
 		form = self.form_class(request.POST)
@@ -236,8 +237,9 @@ class BranchCreateView(generic.edit.CreateView):
 			selected_scene_from = form.cleaned_data['from_scene']
 			selected_description = form.cleaned_data['description']
 
-			current_user = request.user
+			current_user = request.user#This should no longer be needed, because only authored and open scenes available as choices
 			if selected_scene_to.closed == False or selected_scene_to.user == current_user:
+				
 				branch = Branch(
 					to_scene=selected_scene_to,
 					from_scene=selected_scene_from,
