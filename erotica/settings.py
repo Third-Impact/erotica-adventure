@@ -25,7 +25,7 @@ SECRET_KEY = '&%-qty=2j5oog=nqcxnzo2$g^2bdaw(e)6q6-6vs8v502g+4tt'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -141,3 +141,10 @@ LOGIN_URL = '/erotica/permission/'
 import dj_database_url
 db_from_env = dj_database_url.config()
 DATABASES['default'].update(db_from_env)
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
