@@ -140,7 +140,7 @@ LOGIN_URL = '/erotica/permission/'
 
 import dj_database_url
 db_from_env = dj_database_url.config()
-DATABASES['default'].update(db_from_env)
+DATABASES['default'] = db_from_env
 
 try:
     from .local_settings import *
