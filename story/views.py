@@ -123,7 +123,7 @@ class SceneCreateView(generic.edit.CreateView):
 	template_name = 'new_scene_form.html'
 	model = Scene
 
-	default_values = {'story_text': '', 'save_point':False, 'end_point':False, 'picture':''}
+	default_values = {'save_point':False, 'end_point':False, 'picture':''}
 
 	def get(self, request, *args, **kwargs):
 		form = self.form_class(initial=self.default_values)
