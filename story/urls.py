@@ -1,6 +1,7 @@
 from django.conf.urls import url
 
 from . import views
+from django.contrib.auth import views as auth_views
 
 app_name = 'erotica'
 
@@ -10,6 +11,7 @@ urlpatterns = [
     url(r'^my-scenes/$', views.AuthorScenesView.as_view(), name='dashboard'),
 
     url(r'^new-user/$', views.UserFormView.as_view(), name='new-user'),
+    # url(r'^login/$', auth_views.login, {'template_name':'login_form.html'}),
     url(r'^login/$', views.LoginView.as_view(), name='login'),
     url(r'^logout/$', views.logout_view, name='logout'),
     
