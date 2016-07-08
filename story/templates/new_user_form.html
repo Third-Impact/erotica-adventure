@@ -1,5 +1,5 @@
 <h1>You are well on your way to becoming one of the chosen ones</h1>
 <form action="" method="post">{% csrf_token %}
-    {{ form }}
+    {{ form.as_p }}
     <input type="submit" value="create user" />
 </form>
