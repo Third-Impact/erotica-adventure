@@ -1,0 +1,19 @@
+<h1>Author Dashboard</h1>
+<div>
+	<h2>Welcome, {{ author.username }} </h2>
+</div>
+
+{% if scenes %}
+	<h3> Your scenes: </h3>
+	<ul>
+	{% for scene in scenes %}
+		<li>
+			<a href="/erotica/{{ scene.id }}/">
+		{{ scene.story_text|truncatechars:100 }}
+			</a>
+			<p>Last edited on:{{ scene.last_edited }}
+		</li>
+	{% endfor %}
+{% else %}
+	<h3> You have not created any scenes yet </h3>
+{% endif %}

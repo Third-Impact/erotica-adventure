@@ -85,7 +85,7 @@ class LoginView(generic.FormView):
 	form_class = LoginForm
 	default_values = {'username': '', 'password': ''}
 	template_name = 'login_form.html'
-	success_url = '/erotica'
+	success_url = '/erotica/'
 
 	def get(self, request, *args, **kwargs):
 		form = self.form_class(initial=self.default_values)
@@ -187,11 +187,11 @@ class SceneEditView(generic.edit.UpdateView):
 		if self.check_author(edited_scene, request.user):
 			
 			form = self.form_class(request.POST)
-			if form.is_valid() and self.params_ok(form):
+			if form.is_valid() and self.params_ok(form, edited_scene):
 				edited_scene.story_text = form.cleaned_data['story_text']
 				edited_scene.save_point = form.cleaned_data['save_point']
+				edited_scene.end_point = form.cleaned_data['end_point']
 				edited_scene.picture = form.cleaned_data['picture']
-
 				edited_scene.last_edited = timezone.now()
 				edited_scene.save()
 
@@ -204,10 +204,23 @@ class SceneEditView(generic.edit.UpdateView):
 			return render(request, 'scene_permission.html', {'scene': current_scene, 'author':False})
 
 	#checks the edited scene paramters to make sure they are kosher
-	def params_ok(self, form):
+	def params_ok(self, form, scene):
 		#check end point
+		if form.cleaned_data['end_point']==True and not scene.can_be_end():
+			form.add_error(field='end_point',error=
+				"Scene does not meet criteria for end point."
+				"Must have a branch to, and only branches from either origin or save point"
+				)
+			return False
 		#check if scene could be opened
+		if form.cleaned_data['closed']==False and not scene.can_be_open():
+			form.add_error(field='closed',error=
+				"Scene does not meet criteria to be open. Must have a branch linking to it; must have either 2 branches from it or designated as an end point."
+				)
+			return False
+
 		return True
+
 
 @method_decorator(login_required, name='dispatch')
 class BranchCreateView(generic.edit.CreateView):
@@ -262,6 +275,19 @@ class BranchCreateView(generic.edit.CreateView):
 		content = self.get_form_contents(request, form)
 		return render(request, self.template_name, content)		
 
+
+@method_decorator(login_required, name='dispatch')
+class AuthorScenesView(generic.ListView):
+
+	template_name = 'author_dashboard.html'
+	context_obect_name = 'author'
+	model = Scene
+
+	def get(self, request, *args, **kwargs):
+		author = request.user
+		scenes = Scene.objects.filter(user=author).exclude(pk=1)
+		context = {'author': author, 'scenes':scenes}
+		return render(request, self.template_name, context)
 
 
 def direct_to_index(request):
