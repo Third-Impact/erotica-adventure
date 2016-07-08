@@ -189,12 +189,17 @@ class SceneEditView(generic.edit.UpdateView):
 			form = self.form_class(request.POST)
 			if form.is_valid() and self.params_ok(form):
 				edited_scene.story_text = form.cleaned_data['story_text']
+				edited_scene.save_point = form.cleaned_data['save_point']
+				edited_scene.picture = form.cleaned_data['picture']
+
+				edited_scene.last_edited = timezone.now()
 				edited_scene.save()
 
 				success_url = '/erotica/'+str(edited_scene.id)+'/'
 				return HttpResponseRedirect(success_url)
 
 			return render(request, self.template_name, {'form': form, 'scene': edited_scene})
+		#Scene was written by a different author
 		else:
 			return render(request, 'scene_permission.html', {'scene': current_scene, 'author':False})
 
@@ -212,7 +217,7 @@ class BranchCreateView(generic.edit.CreateView):
 	template_name = 'branch_form.html'
 	
 	def get_form_contents(self, request, form):
-		querytext = "user_id=" + str(request.user.id) + " or closed=False"
+		querytext = "user_id=" + str(request.user.id) + " or closed=False or id=1"
 		valid_scenes = Scene.objects.extra(where=[querytext])
 		from_scene = Scene.objects.get(pk=self.kwargs['pk'])
 		# content = form.generate_choices(request.user, pk=self.kwargs['pk'])
@@ -256,6 +261,11 @@ class BranchCreateView(generic.edit.CreateView):
 
 		content = self.get_form_contents(request, form)
 		return render(request, self.template_name, content)		
+
+
+
+def direct_to_index(request):
+	return HttpResponseRedirect('/erotica/')
 
 def permission_redirect(request):
 	template_name = 'scene_permission.html'
