@@ -29,22 +29,16 @@ class LoginForm(forms.Form):
 
 
 
-def picture_validator(value):
-		if value is not '':
-			value.URLValidator.__call__(value)
-
 class NewSceneForm(forms.ModelForm):
 	story_text = forms.CharField(widget=forms.Textarea, label='write scene story here')
-	# picture = forms.CharField(label='optional url to a picture for you scene', validators=[picture_validator])
-
 
 	class Meta:
 		fields = ('story_text', 'save_point', 'picture')
 		model = Scene
 
+
 class EditSceneForm(forms.ModelForm):
 	story_text = forms.CharField(widget=forms.Textarea, label='write scene story here')
-	# picture = forms.CharField(label='optional url to a picture for you scene', validators=[picture_validator])
 
 	class Meta:
 		fields = ('story_text', 'save_point', 'end_point', 'closed', 'picture')

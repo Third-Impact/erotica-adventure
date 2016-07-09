@@ -15,9 +15,6 @@ class Scene(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
 	last_edited = models.DateTimeField('last changed')
 
-	def picture_validator(value):
-		if value is not '':
-			value.URLValidator.__call__()
 
 	def can_be_open(self):
 		branches_from = Branch.objects.filter(from_scene=self.id)
