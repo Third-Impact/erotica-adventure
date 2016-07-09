@@ -2,11 +2,12 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import Scene, Branch
 from django.core.validators import URLValidator, EmailValidator
+from django.forms import widgets
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(label='username', max_length=75)
-    password1 = forms.CharField(label='password', max_length=50)
-    password2 = forms.CharField(label='password again', max_length=50)
+    password1 = forms.CharField(label='password', max_length=50, widget=widgets.PasswordInput)
+    password2 = forms.CharField(label='password again', max_length=50, widget=widgets.PasswordInput)
     email = forms.EmailField(label='email address')
 
     def clean(self):
@@ -25,7 +26,7 @@ class UserForm(forms.ModelForm):
 
 class LoginForm(forms.Form):
 	username = forms.CharField(label='username', max_length=75)
-	password = forms.CharField( max_length=50)
+	password = forms.CharField( max_length=50, widget=widgets.PasswordInput)
 
 
 
