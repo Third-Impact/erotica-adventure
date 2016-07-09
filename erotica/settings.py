@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '&%-qty=2j5oog=nqcxnzo2$g^2bdaw(e)6q6-6vs8v502g+4tt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -150,3 +150,27 @@ except ImportError:
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# LOGGING = {
+#     'handlers': {
+#         'console': {
+#             'class' : 'logging.StreamHandler',
+#             # 'formatter': 'brief',
+#             'level'   : 'INFO',
+#             'stream'  : 'ext://sys.stdout'
+#         },
+#     },
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': 'INFO',
+#             'propagate': True,
+#         },
+
+#     },
+# }
