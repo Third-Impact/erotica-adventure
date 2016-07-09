@@ -1,11 +1,13 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Scene, Branch
+from django.core.validators import URLValidator, EmailValidator
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(label='username', max_length=75)
     password1 = forms.CharField(label='password', max_length=50)
     password2 = forms.CharField(label='password again', max_length=50)
+    email = forms.EmailField(label='email address')
 
     def clean(self):
     	cleaned_data = super(UserForm, self).clean()
@@ -17,7 +19,7 @@ class UserForm(forms.ModelForm):
                     "The password fields must both be the same."
                 )
     class Meta:
-    	fields = ('username', 'password1', 'password2')
+    	fields = ('username', 'password1', 'password2', 'email')
     	model = User
 
 
@@ -27,15 +29,22 @@ class LoginForm(forms.Form):
 
 
 
+def picture_validator(value):
+		if value is not '':
+			value.URLValidator.__call__(value)
+
 class NewSceneForm(forms.ModelForm):
 	story_text = forms.CharField(widget=forms.Textarea, label='write scene story here')
+	# picture = forms.CharField(label='optional url to a picture for you scene', validators=[picture_validator])
+
 
 	class Meta:
-		fields = ('story_text', 'save_point', 'end_point', 'picture')
+		fields = ('story_text', 'save_point', 'picture')
 		model = Scene
 
 class EditSceneForm(forms.ModelForm):
 	story_text = forms.CharField(widget=forms.Textarea, label='write scene story here')
+	# picture = forms.CharField(label='optional url to a picture for you scene', validators=[picture_validator])
 
 	class Meta:
 		fields = ('story_text', 'save_point', 'end_point', 'closed', 'picture')

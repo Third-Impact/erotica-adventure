@@ -37,6 +37,7 @@ class IndexView(generic.ListView):
 		# 	raise Http404("problem finding scenes")
 
 		context['scenes'] = scenes
+		context['branches'] = branches
 		# return render(request, 'index.html', {'scenes': scenes})
 		return context
 
@@ -136,7 +137,7 @@ class SceneCreateView(generic.edit.CreateView):
 			scene = Scene(
 				story_text=form.cleaned_data['story_text'],
 			 	save_point=form.cleaned_data['save_point'], 
-			 	end_point=form.cleaned_data['end_point'],
+			 	#end_point=form.cleaned_data['end_point'],
 			 	picture=form.cleaned_data['picture'],
 			 	user = request.user,
 			 	last_edited=timezone.now()

@@ -1,14 +1,23 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import URLValidator
+
+def picture_validator(value):
+		if value is not '':
+			value.URLValidator.__call__(value)
 # Create your models here.
 class Scene(models.Model):
 	story_text = models.TextField()
 	closed = models.BooleanField(default=True)
 	end_point = models.BooleanField(default=False)
 	save_point = models.BooleanField(default=False)
-	picture = models.URLField(blank=True)
+	picture = models.URLField(blank=True, validators=[picture_validator])
 	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
 	last_edited = models.DateTimeField('last changed')
+
+	def picture_validator(value):
+		if value is not '':
+			value.URLValidator.__call__()
 
 	def can_be_open(self):
 		branches_from = Branch.objects.filter(from_scene=self.id)
