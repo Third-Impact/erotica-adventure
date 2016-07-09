@@ -74,7 +74,7 @@ class UserFormView(generic.View):
 		form = self.form_class(request.POST)
 
 		if form.is_valid():
-			new_user = User(username= form.cleaned_data['username'])#form.save(commit=False)
+			new_user = User(username= form.cleaned_data['username'], email=form.cleaned_data['email'])#form.save(commit=False)
 			new_user.set_password(form.cleaned_data['password1'])
 			new_user.save()
 			return HttpResponseRedirect(self.success_url)
