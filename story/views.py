@@ -19,10 +19,10 @@ from django.contrib.auth import logout
 from django.utils.decorators import method_decorator
 from django.utils import timezone
 # import the logging library
-import logging
+# import logging
 
 # Get an instance of a logger
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 class IndexView(generic.ListView):
 # def index(request):
@@ -46,8 +46,8 @@ class IndexView(generic.ListView):
 		# return render(request, 'index.html', {'scenes': scenes})
 		return context
 
-		if bad_mojo:
-			logger.debug()
+		# if bad_mojo:
+		# 	logger.debug()
 
 
 class SceneView(generic.DetailView):
