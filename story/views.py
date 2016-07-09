@@ -192,8 +192,10 @@ class SceneEditView(generic.edit.UpdateView):
 				edited_scene.story_text = form.cleaned_data['story_text']
 				edited_scene.save_point = form.cleaned_data['save_point']
 				edited_scene.end_point = form.cleaned_data['end_point']
+				edited_scene.closed = form.cleaned_data['closed']
 				edited_scene.picture = form.cleaned_data['picture']
 				edited_scene.last_edited = timezone.now()
+				
 				edited_scene.save()
 
 				success_url = '/erotica/'+str(edited_scene.id)+'/'
