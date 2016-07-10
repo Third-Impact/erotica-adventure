@@ -9,20 +9,15 @@ from django.core.urlresolvers import reverse
 
 from django.views import generic
 
-from .models import Scene, Branch
+from story.models import Scene, Branch
 from django.contrib.auth.models import Permission, User
-from .forms import UserForm, LoginForm, NewSceneForm, EditSceneForm, BranchForm
+from story.forms import UserForm, LoginForm, NewSceneForm, EditSceneForm, BranchForm
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import logout
 from django.utils.decorators import method_decorator
 from django.utils import timezone
-# import the logging library
-# import logging
-
-# Get an instance of a logger
-# logger = logging.getLogger(__name__)
 
 class IndexView(generic.ListView):
 # def index(request):
@@ -67,64 +62,6 @@ class SceneView(generic.DetailView):
 
 		return context
 
-
-class UserFormView(generic.View):
-	form_class = UserForm
-	default_values = {'username': '', 'password': ''}
-	template_name = 'new_user_form.html'
-	success_url = '/erotica/login'
-
-	def get(self, request, *args, **kwargs):
-		form = self.form_class(initial=self.default_values)
-		return render(request, self.template_name, {'form': form})
-
-	def post(self, request, *args, **kwargs):
-		form = self.form_class(request.POST)
-
-		if form.is_valid():
-			new_user = User(username= form.cleaned_data['username'], email=form.cleaned_data['email'])#form.save(commit=False)
-			new_user.set_password(form.cleaned_data['password1'])
-			new_user.save()
-			return HttpResponseRedirect(self.success_url)
-
-		return render(request, self.template_name, {'form': form})
-
-
-class LoginView(generic.FormView):
-	form_class = LoginForm
-	default_values = {'username': '', 'password': ''}
-	template_name = 'login_form.html'
-	success_url = '/erotica/'
-
-	def get(self, request, *args, **kwargs):
-		form = self.form_class(initial=self.default_values)
-		return render(request, self.template_name, {'form': form})
-	
-	def post(self, request, *args, **kwargs):
-		form = self.form_class(request.POST)
-
-		if form.is_valid():
-			name = form.cleaned_data['username']
-			password = form.cleaned_data['password']
-
-			user = authenticate(username=name, password=password)
-			if user is not None:
-				if user.is_active:
-					login(request, user)
-					# check if user has any scenes....(not done yet)
-					return HttpResponseRedirect(self.success_url)
-				else:
-					#return HttpResponse('Bad User')
-					return render(request, self.template_name, {'form': form})
-
-			else:
-				#errors = "The username or pasword is incorrect"
-				form.add_error(field=None, error="The username or pasword is incorrect")
-				return render(request, self.template_name, {'form': form})		
-
-		return render(request, self.template_name, {'form': form})
-
-# from django.contrib.auth.mixins import LoginRequiredMixin
 @method_decorator(login_required, name='dispatch')
 class SceneCreateView(generic.edit.CreateView):
 	login_url = '/erotica/permission/'
@@ -233,84 +170,3 @@ class SceneEditView(generic.edit.UpdateView):
 		return True
 
 
-@method_decorator(login_required, name='dispatch')
-class BranchCreateView(generic.edit.CreateView):
-	model = Branch
-	login_url = '/erotica/permission/'
-	form_class = BranchForm
-	template_name = 'branch_form.html'
-	
-	def get_form_contents(self, request, form):
-		querytext = "user_id=" + str(request.user.id) + " or closed=False or id=1"
-		valid_scenes = Scene.objects.extra(where=[querytext])
-		from_scene = Scene.objects.get(pk=self.kwargs['pk'])
-		# content = form.generate_choices(request.user, pk=self.kwargs['pk'])
-		# content['form'] = form
-		return {'form': form, 'defval':from_scene, 'scenes':valid_scenes}
-
-	def get(self, request, *args, **kwargs):
-		from_scene = Scene.objects.get(pk=self.kwargs['pk'])
-		default_values = {'from_scene': from_scene}
-		form = self.form_class(initial=default_values)
-		# self.generate_choices(request.user)
-		content = self.get_form_contents(request, form)
-		if from_scene.closed == False or from_scene.user == request.user:
-			return render(request, self.template_name, content)
-		else:
-			return render(request, 'scene_permission.html', {'scene': from_scene})
-
-	def post(self, request, *args, **kwargs):
-		form = self.form_class(request.POST)
-		if form.is_valid():
-			selected_scene_to = form.cleaned_data['to_scene']
-			selected_scene_from = form.cleaned_data['from_scene']
-			selected_description = form.cleaned_data['description']
-
-			current_user = request.user#This should no longer be needed, because only authored and open scenes available as choices
-			if selected_scene_to.closed == False or selected_scene_to.user == current_user:
-				
-				branch = Branch(
-					to_scene=selected_scene_to,
-					from_scene=selected_scene_from,
-					description=selected_description
-					)
-				branch.save()
-				success_url = '/erotica/'+str(self.kwargs['pk'])+'/'
-				return HttpResponseRedirect(success_url)
-			
-			else:
-				form.add_error(field=None, error="A branch can only be created to an open scene or one you have written")
-				content = self.get_form_contents(request, form)
-				return render(request, self.template_name, content)
-
-		content = self.get_form_contents(request, form)
-		return render(request, self.template_name, content)		
-
-
-@method_decorator(login_required, name='dispatch')
-class AuthorScenesView(generic.ListView):
-
-	template_name = 'author_dashboard.html'
-	context_obect_name = 'author'
-	model = Scene
-
-	def get(self, request, *args, **kwargs):
-		author = request.user
-		scenes = Scene.objects.filter(user=author).exclude(pk=1)
-		context = {'author': author, 'scenes':scenes}
-		return render(request, self.template_name, context)
-
-
-def direct_to_index(request):
-	return HttpResponseRedirect('/erotica/')
-
-def permission_redirect(request):
-	template_name = 'scene_permission.html'
-	return  render(request, template_name, {})
-
-def logout_view(request):
-	logout(request)
-	return HttpResponseRedirect('/erotica/')
-	
-def about(request):
-	return HttpResponse("Its about tiiiiiime")

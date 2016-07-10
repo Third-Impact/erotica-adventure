@@ -54,6 +54,8 @@ class Scene(models.Model):
 	def __str__(self):
 		return self.story_text
 
+		
+
 class Branch(models.Model):
 	from_scene = models.ForeignKey(Scene, on_delete=models.CASCADE, related_name="from_scene")
 	to_scene = models.ForeignKey(Scene, on_delete=models.CASCADE, related_name="to_scene")
