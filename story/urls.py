@@ -12,7 +12,7 @@ urlpatterns = [
 
     url(r'^new-user/$', views.UserFormView.as_view(), name='new-user'),
     
-    url(r'^login/$', views.LoginView.as_view(), name='login'),
+    url(r'^login/$', views.login_auth_view, name='login'),
     url(r'^logout/$', views.logout_view, name='logout'),
     
     url(r'^new-scene/$', views.SceneCreateView.as_view(), name='new_scene'),

@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&%-qty=2j5oog=nqcxnzo2$g^2bdaw(e)6q6-6vs8v502g+4tt'
+SECRET_KEY = os.environ['dj_s_key']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -137,6 +137,7 @@ STATICFILES_DIRS = (
 
 
 LOGIN_URL = '/erotica/permission/'
+LOGIN_REDIRECT_URL = '/erotica/'
 
 import dj_database_url
 db_from_env = dj_database_url.config()

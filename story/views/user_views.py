@@ -18,7 +18,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import logout
 from django.utils.decorators import method_decorator
 from django.utils import timezone
-
+from django.contrib.auth import views as auth_views
 
 class UserFormView(generic.View):
 	form_class = UserForm
@@ -42,41 +42,46 @@ class UserFormView(generic.View):
 		return render(request, self.template_name, {'form': form})
 
 
-class LoginView(generic.FormView):
-	form_class = LoginForm
-	default_values = {'username': '', 'password': ''}
-	template_name = 'login_form.html'
-	success_url = '/erotica/'
+# class LoginView(generic.FormView):
+# 	form_class = LoginForm
+# 	default_values = {'username': '', 'password': ''}
+# 	template_name = 'login_form.html'
+# 	success_url = '/erotica/'
 
-	def get(self, request, *args, **kwargs):
-		form = self.form_class(initial=self.default_values)
-		return render(request, self.template_name, {'form': form})
+# 	def get(self, request, *args, **kwargs):
+# 		form = self.form_class(initial=self.default_values)
+# 		return render(request, self.template_name, {'form': form})
 	
-	def post(self, request, *args, **kwargs):
-		form = self.form_class(request.POST)
+# 	def post(self, request, *args, **kwargs):
+# 		form = self.form_class(request.POST)
 
-		if form.is_valid():
-			name = form.cleaned_data['username']
-			password = form.cleaned_data['password']
+# 		if form.is_valid():
+# 			name = form.cleaned_data['username']
+# 			password = form.cleaned_data['password']
 
-			user = authenticate(username=name, password=password)
-			if user is not None:
-				if user.is_active:
-					login(request, user)
-					# check if user has any scenes....(not done yet)
-					return HttpResponseRedirect(self.success_url)
-				else:
-					#return HttpResponse('Bad User')
-					return render(request, self.template_name, {'form': form})
+# 			user = authenticate(username=name, password=password)
+# 			if user is not None:
+# 				if user.is_active:
+# 					login(request, user)
+# 					# check if user has any scenes....(not done yet)
+# 					return HttpResponseRedirect(self.success_url)
+# 				else:
+# 					#return HttpResponse('Bad User')
+# 					return render(request, self.template_name, {'form': form})
 
-			else:
-				#errors = "The username or pasword is incorrect"
-				form.add_error(field=None, error="The username or pasword is incorrect")
-				return render(request, self.template_name, {'form': form})		
+# 			else:
+# 				#errors = "The username or pasword is incorrect"
+# 				form.add_error(field=None, error="The username or pasword is incorrect")
+# 				return render(request, self.template_name, {'form': form})		
 
-		return render(request, self.template_name, {'form': form})
-
-
+# 		return render(request, self.template_name, {'form': form})
+def login_auth_view(request):
+	template_name = 'login_form.html'
+	form_class = LoginForm
+	# redirect_field_name = 'GET /erotica/'
+	
+	template_response = auth_views.login(request, template_name=template_name )	
+	return template_response
 
 @method_decorator(login_required, name='dispatch')
 class AuthorScenesView(generic.ListView):
