@@ -1,0 +1,64 @@
+ /**body {
+	background-color: black;
+	background-image: url("http://www.templateof.com/postpic/2015/06/old-black-leather-texture_189908.jpg");
+} **/
+html { 
+  background: url("http://www.bannerelkbarra.com/wp-content/uploads/2013/12/black-leather.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+* {
+	font-family: 'Cutive Mono', Courier;
+}
+
+#titleLink {
+	text-align:left;
+	font-size: 50px;
+	text-decoration: none;
+	color:white;
+	font-family:cursive;
+}
+
+#login {
+	text-align: right;
+	position: absolute;
+	right:10px;
+}
+
+p:nth-child(2) {
+	text-align: right;
+}
+h1 {
+	text-align:center;
+}
+
+div a {
+	text-align: center;
+	color:black;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a:hover {
+	letter-spacing:2px;
+	color:#b30000;
+}
+a:visited {
+	color:#a6a6a6;
+}
+.main {
+	width:75%;
+	border:20px;
+	padding:20px;
+	margin-top:30px;
+	margin-left: auto; 
+	margin-right: auto;
+	background-image: url("http://thedigitalyardsale.com/freebies/7-17/old_paper6.jpg");
+}
+
+.options {
+	text-align: center;
+}
