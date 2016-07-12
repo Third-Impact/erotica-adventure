@@ -75,13 +75,13 @@ class UserFormView(generic.View):
 # 				return render(request, self.template_name, {'form': form})		
 
 # 		return render(request, self.template_name, {'form': form})
+
 def login_auth_view(request):
 	template_name = 'login_form.html'
-	form_class = LoginForm
-	# redirect_field_name = 'GET /erotica/'
 	
 	template_response = auth_views.login(request, template_name=template_name )	
 	return template_response
+
 
 @method_decorator(login_required, name='dispatch')
 class AuthorScenesView(generic.ListView):

@@ -18,8 +18,6 @@ from django.contrib.auth import logout
 from django.conf import settings
 # from django.utils.decorators import method_decorator
 
-
-
 def direct_to_index(request):
 	return HttpResponseRedirect('/erotica/')
 

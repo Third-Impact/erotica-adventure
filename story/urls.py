@@ -27,4 +27,5 @@ urlpatterns = [
 
     url(r'^(?P<pk>[0-9]+)/$', views.SceneView.as_view(), name='show')
 
+
 ]
