@@ -6,92 +6,86 @@ pickBranch = $('#pick-branch')//document.getElementById('pick-branch')
 if (pickBranch) {
 	pickBranch.click(function() {
 		links = $('.branch-link')//document.getElementsByClassName('branch-link')
-		numBranches = links.length
-		rand = Math.floor(Math.random() * (numBranches))
-		dieSim = dieSimulator(links)
-		scrollThroughLinks(dieSim)
+
+		dieSim = new DieSimulator(links)
+		// scrollThroughLinks(dieSim)
+		dieSim.roll()
 	  });
 }
 
-function scrollThroughLinks(die){
-	
-		// numBranches = links.length
-		
-		// rand = Math.floor(Math.random() * (numBranches))
-		// while(linkNum == rand){
-		// 	rand = Math.floor(Math.random() * (numBranches))
-		// }
-		// selector = ".branch-link:eq("+rand+")"
 
-		// el = $(selector)
+var DieSimulator = function(links){
 
-		die.animation()
-
-		setTimeout(function(){
-			die.next()
-			if (die.time() >= 1000){
-				die.animationEnlarge()
-				return
-
-			} else {
-				scrollThroughLinks(die)
-			}
-
-		}, die.time())
+	this.time=400
+	this.numBranches = links.length
+	this.linkNum = this.rand = Math.floor(Math.random() * (this.numBranches))
+	this.element = this.select()
 }
 
+DieSimulator.prototype.incTime = function(){
+	this.time*=1.15
+}
 
-
-var dieSimulator = function(links){
-
-	var time=400
-	var element = select()
-	var numBranches = links.length
-	var linkNum = rand = Math.floor(Math.random() * (numBranches))
-
-	function incTime(){
-		time*=1.15
-	}
-
-	function select(){
-		while(linkNum == rand){
-			rand = Math.floor(Math.random() * (numBranches))
+DieSimulator.prototype.select = function(){
+		// this.rand = Math.floor(Math.random() * (numBranches))
+		while(this.linkNum == this.rand){
+			this.rand = Math.floor(Math.random() * (this.numBranches))
 		}
-		linkNum = rand
-		selector = ".branch-link:eq("+linkNum+")"
+		this.linkNum = this.rand
+		selector = ".branch-link:eq("+this.linkNum+")"
 		return $(selector)
-	}
+}
 
-	return {
-		animation: function (){
-			element.animate({
+	// return {
+DieSimulator.prototype.animation = function (){
+		// this.element = this.select()
+		el = this.element
+		time= this.time
+			el.animate({
 				letterSpacing:"2px"
 						// color: "black"
 			}, time/2.5,  function(){
-				element.animate({
+				el.animate({
 					letterSpacing: "-=2" 
 				}, time/2.5)
 			})
-		},
+		}
 
-		animationEnlarge: function(){
-			element.animate({
+DieSimulator.prototype.animationEnlarge = function(){
+			el = this.element
+			time = this.time
+			el.animate({
 				letterSpacing:"2px"
 			}, time, function(){
-				return element[0].click()
+				return el[0].click()
 			})
-		},
-
-		time: function(){
-			return time
-		},
-
-		next: function(){
-		
-			element = select()
-
-			incTime()
 		}
-	}
 
+		// time: function(){
+		// 	return time
+		// },
+
+DieSimulator.prototype.next = function(){
+		
+			this.element = this.select()
+
+			this.incTime()
+		}
+
+DieSimulator.prototype.roll = function(){
+	this.animation()
+	that = this
+		setTimeout( function(){
+			that.next()
+			if (that.time >= 1000){
+				that.animationEnlarge()
+				return
+
+			} else {
+				that.roll()
+			}
+
+		}, that.time)
 }
+	
+

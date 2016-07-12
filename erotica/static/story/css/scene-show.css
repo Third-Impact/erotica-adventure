@@ -42,11 +42,6 @@ div a {
 	font-weight: bold;
 }
 
-.hover {
-	letter-spacing:2px;
-	color:#b30000;
-}
-
 a:hover {
 	letter-spacing:2px;
 	color:#b30000;
