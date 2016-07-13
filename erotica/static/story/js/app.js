@@ -1,5 +1,4 @@
-console.log("hello world")
-
+console.log("app.js loaded")
 
 
 pickBranch = $('#pick-branch')//document.getElementById('pick-branch')
@@ -19,24 +18,22 @@ var DieSimulator = function(links){
 	this.time=400
 	this.numBranches = links.length
 	this.linkNum = this.rand = Math.floor(Math.random() * (this.numBranches))
-	this.element = this.select()
+	this.selectNext()
 }
 
-DieSimulator.prototype.incTime = function(){
-	this.time*=1.15
-}
-
-DieSimulator.prototype.select = function(){
+// randomly pick the next link
+DieSimulator.prototype.selectNext = function(){
 		// this.rand = Math.floor(Math.random() * (numBranches))
 		while(this.linkNum == this.rand){
 			this.rand = Math.floor(Math.random() * (this.numBranches))
 		}
 		this.linkNum = this.rand
 		selector = ".branch-link:eq("+this.linkNum+")"
-		return $(selector)
+		this.element = $(selector)
+		// return $(selector)
 }
 
-	// return {
+// enlarge and shrink the selected link
 DieSimulator.prototype.animation = function (){
 		// this.element = this.select()
 		el = this.element
@@ -51,6 +48,7 @@ DieSimulator.prototype.animation = function (){
 			})
 		}
 
+// enlarges and follows the last selection as if it were clicked.
 DieSimulator.prototype.animationEnlarge = function(){
 			el = this.element
 			time = this.time
@@ -61,17 +59,15 @@ DieSimulator.prototype.animationEnlarge = function(){
 			})
 		}
 
-		// time: function(){
-		// 	return time
-		// },
-
+// pick the next link element and slow down the roll time
 DieSimulator.prototype.next = function(){
-		
-			this.element = this.select()
+			// this.element = this.select()
+	this.selectNext()
+	// this.incTime()
+	this.time*=1.15
+}
 
-			this.incTime()
-		}
-
+// recursive roll function which randomly selects branch links.
 DieSimulator.prototype.roll = function(){
 	this.animation()
 	that = this
@@ -80,7 +76,6 @@ DieSimulator.prototype.roll = function(){
 			if (that.time >= 1000){
 				that.animationEnlarge()
 				return
-
 			} else {
 				that.roll()
 			}
