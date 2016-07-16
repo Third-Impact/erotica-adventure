@@ -25,13 +25,15 @@
 		<div class="options">
 			<p>Do you want to...</p>
 			{% for branch in branches %}
-				<a class="branch-link" href="/erotica/{{ branch.to_scene_id }}/">{{ branch.description }}</a>
-				<br>
+				<div class="branch-bg">
+					<a class="branch-link" href="/erotica/{{ branch.to_scene_id }}/">{{ branch.description }}</a>
+					<br>
+				</div>
 				<p>or...</p>
 			{% endfor %}
 
 			<div>
-				{% if branches %}
+				{% if branches|length >= 2 %}
 				<button id="pick-branch">Pick For Me</button>
 				{% endif %}
 

@@ -16,9 +16,10 @@ class UserForm(forms.ModelForm):
     	password2 = cleaned_data.get("password2")
 
     	if password1 != password2:
-    		raise forms.ValidationError(
-                    "The password fields must both be the same."
-                )
+    		# raise forms.ValidationError(
+      #               "The password fields must both be the same."
+      #           )
+      		self.add_error(field='password2', error="The password fields must both be the same.")
     class Meta:
     	fields = ('username', 'password1', 'password2', 'email')
     	model = User
@@ -57,14 +58,16 @@ class BranchForm(forms.ModelForm):
 		scene_to = cleaned_data.get("to_scene")
 
 		if scene_from == scene_to:
-			raise forms.ValidationError(
-    			"A branch cannot lead to itself"
-				)
+			# raise forms.ValidationError(
+   #  			"A branch cannot lead to itself"
+			# 	)
+			self.add_error(field='to_scene', error="A branch cannot lead to itself")
 
 		if scene_from.end_point and not (scene_to.save_point or scene_to.id == 1):
-			raise forms.ValidationError(
-				"An end point can only branch to a save point or the origin"
-				)
+			# raise forms.ValidationError(
+			# 	"An end point can only branch to a save point or the origin"
+			# 	)
+			self.add_error(field='to_scene', error="An end point can only branch to a save point or the origin")
 
 	class Meta:
 		fields = ('from_scene', 'to_scene', 'description')

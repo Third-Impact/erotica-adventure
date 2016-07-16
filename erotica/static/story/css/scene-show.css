@@ -46,6 +46,11 @@ a:hover {
 	letter-spacing:2px;
 	color:#b30000;
 }
+
+a:hover:visited {
+	color:#b30000;
+}
+
 a:visited {
 	color:#a6a6a6;
 }

@@ -119,7 +119,8 @@ class SceneEditView(generic.edit.UpdateView):
 			'story_text':current_scene.story_text,
 			'save_point':current_scene.save_point,
 			'end_point':current_scene.end_point,
-			'picture':current_scene.picture
+			'picture':current_scene.picture,
+			'closed':current_scene.closed
 		}
 		#author = current_scene.user
 		if self.check_author(current_scene, request.user):
