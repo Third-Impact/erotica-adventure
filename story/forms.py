@@ -20,9 +20,11 @@ class UserForm(forms.ModelForm):
       #               "The password fields must both be the same."
       #           )
       		self.add_error(field='password2', error="The password fields must both be the same.")
+    
     class Meta:
     	fields = ('username', 'password1', 'password2', 'email')
     	model = User
+
 
 
 class LoginForm(forms.Form):
@@ -39,12 +41,14 @@ class NewSceneForm(forms.ModelForm):
 		model = Scene
 
 
+
 class EditSceneForm(forms.ModelForm):
 	story_text = forms.CharField(widget=forms.Textarea, label='write scene story here')
 
 	class Meta:
 		fields = ('story_text', 'save_point', 'end_point', 'closed', 'picture')
 		model = Scene
+
 
 
 class BranchForm(forms.ModelForm):

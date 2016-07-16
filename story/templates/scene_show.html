@@ -13,10 +13,12 @@
 	<a id="login" href="/erotica/login/"> Log In </a>
 	<div class="main">
 		<!-- <h1>Scene Title</h1> -->
-		<p> By {{ scene.user.username }} </p>
-<!-- 		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nulla elementum, efficitur augue vitae, mattis ipsum. Sed vel viverra urna. Quisque tincidunt accumsan tempus. Sed semper et elit id tempus. Pellentesque odio velit, consequat ac porta et, lacinia vitae turpis. Nulla feugiat quam turpis, in blandit ex auctor ut. Pellentesque nec urna efficitur, posuere justo id, dictum elit. Donec tincidunt pellentesque sapien, eget lacinia mauris. Integer in ullamcorper tellus. </p>
+		<p> 
+			By 
+			{% block author %}
+			{% endblock author %}
+		</p>
 
-		<p>Sed luctus fermentum ultricies. Nam lectus urna, eleifend eget justo et, ultrices consequat metus. Mauris id lorem sollicitudin, vehicula sem nec, faucibus erat. Phasellus hendrerit pellentesque lectus nec malesuada. Praesent a urna enim. Nullam vulputate vitae purus sit amet molestie. Phasellus ultricies tortor sit amet consequat aliquet. Mauris nec augue ut purus varius rhoncus quis eu arcu. Nunc ultrices dictum porta. </p> -->
 		<div>
 			{% block story %}
 			{% endblock story %}
@@ -26,7 +28,10 @@
 			<p>Do you want to...</p>
 			{% for branch in branches %}
 				<div class="branch-bg">
-					<a class="branch-link" href="/erotica/{{ branch.to_scene_id }}/">{{ branch.description }}</a>
+					<a class="branch-link" href="/erotica/{{ branch.to_scene_id }}/">
+						{% block branch %}
+						{% endblock branch %}
+					</a>
 					<br>
 				</div>
 				<p>or...</p>
