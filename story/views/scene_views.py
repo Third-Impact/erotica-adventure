@@ -51,13 +51,14 @@ class SceneView(generic.DetailView):
 	context_obect_name = 'scene_and_branches'
 	model = Scene
 
-
-	def get_object(self):
-		scene = super(SceneView, self).get_object()
-		return scene
+	# def get_object(self):
+	# 	scene = super(SceneView, self).get_object()
+	# 	return scene
 
 	def get_context_data(self, **kwargs):
-		context = super(SceneView, self).get_context_data(**kwargs)
+		# context = super(SceneView, self).get_context_data(**kwargs)
+		context = {}
+		context['scene'] = Scene.objects.select_related().get(pk=self.kwargs['pk'])
 		context['branches'] = Branch.objects.filter(from_scene = self.kwargs['pk'])
 
 		return context
@@ -110,7 +111,7 @@ class SceneEditView(generic.edit.UpdateView):
 			return False
 
 	def get_context_data(self, **kwargs):
-		context = Scene.objects.get(pk=self.kwargs['pk'])
+		context = Scene.objects.select_related().get(pk=self.kwargs['pk'])
 		return context
 	#@user_passes_test(check_author, redirect_field_name='/erotica/permission/')
 	def get(self, request, *args, **kwargs):
