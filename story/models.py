@@ -45,8 +45,8 @@ class Scene(models.Model):
 			return False
 		else:
 			for branch in branches_from:
-				scene_to = branch.from_scene
-				if scene_to.id != 1 or scene_to.save_point == False:
+				scene_to = branch.to_scene
+				if scene_to.id != 1 and scene_to.save_point == False:
 					return False
 		return True
 
