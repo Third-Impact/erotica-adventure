@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['dj_s_key']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -79,8 +79,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'erotica',
-        'USER': 'postgres',
-        'PASSWORD': 'gd62885',
+        # 'USER': 'postgres',
+        # 'PASSWORD': 'gd62885',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
