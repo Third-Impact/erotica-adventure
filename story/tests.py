@@ -21,7 +21,7 @@ def create_branch(from_scene, to_scene, text):
 	branch.save()
 	return branch
 
-class SimpleTest(TestCase):
+class EndPointEligabilityTest(TestCase):
 
 	# fixtures = ['dump.json']
 	@classmethod
@@ -29,11 +29,29 @@ class SimpleTest(TestCase):
 		cls.u1 = create_user('TheDoc', 'enterthedalek', 'blah@example.come')
 		# cls.u1 = u1
 		cls.scene_origin = create_scene("origin", False, '', cls.u1)
+		print("origin id is " + str(cls.scene_origin.id))
 		cls.scene_t2 = create_scene("Something happens", False, '', cls.u1) 
 
-	def test_index_status(self):
-		response = self.client.get('/erotica/')
-		self.assertEqual(response.status_code, 200)
+	# def test_index_status(self):
+	# 	response = self.client.get('/erotica/')
+	# 	self.assertEqual(response.status_code, 200)
 
-	def single_new_scene_cannot_be_open(self):
-		self.assertEqual(self.scene_t2.can_be_open(), False)
+	# def test_single_new_scene_cannot_be_open(self):
+	# 	self.assertEqual(self.scene_t2.can_be_open(), False)
+
+	def test_single_new_scene_cannot_be_end(self):
+		self.assertEqual(self.scene_t2.can_be_end(), False)
+
+	def test_adding_a_branch_to_scene_can_make_endpoint(self):
+		create_branch(self.scene_origin, self.scene_t2, "a branch")
+		self.assertEqual(self.scene_t2.can_be_end(), True)
+
+	def test_adding_a_branch_from_scene_to_origin_can_be_end(self):
+		create_branch(self.scene_origin, self.scene_t2, "a branch")
+		self.scene_t3 = create_scene("Candidate endpoint", False, '', self.u1)
+		self.assertEqual(self.scene_t2.can_be_end(), True)
+		create_branch(self.scene_t2, self.scene_t3, "branch to end")
+		self.assertEqual(self.scene_t2.can_be_end(), False)
+		self.assertEqual(self.scene_t3.can_be_end(), True)
+		create_branch(self.scene_t3, self.scene_origin, "branch to origin")
+		self.assertEqual(self.scene_t3.can_be_end(), True)
