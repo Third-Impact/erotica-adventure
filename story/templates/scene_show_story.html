@@ -1,0 +1,13 @@
+{% extends "scene_show.html" %}
+
+{% block author %}
+	{{ scene.user.username }} 
+{% endblock author %}
+
+{% block story %}
+	{{ scene.story_text|linebreaks }}
+{% endblock %}
+
+{% block branch %}
+	{{ branch.description }}
+{% endblock branch %}

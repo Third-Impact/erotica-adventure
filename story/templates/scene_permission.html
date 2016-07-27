@@ -1,0 +1,19 @@
+{% if user.is_authenticated %}
+	<h3>Well then, {{ user.username }} it seems your reach has exceeded your grasp on this one.</h3>
+{% else %}
+	<h3>Apparently you aren't logged in...you probably want to change that.</h3>
+{% endif %}
+
+<h4>You must be logged in to add or edit scenes and branches</h4>
+{% if not author %}
+	<h4>In order to edit scene content, you must be the scene author</h4>
+	{% if scene %}
+		<h3>That scene was written by {{ scene.user.username }} </h3>
+	{% endif %}
+{% endif %}
+
+<a href="/erotica/login/">Log in</a>
+
+{% if scene %}
+	<a href="/erotica/{{ scene.id }}/">Return to scene</a>
+{% endif %}

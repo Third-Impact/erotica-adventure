@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	{% load staticfiles %}
+	<link rel="stylesheet" href="{% static "story/css/scene-show.css" %}"/>
+	<link href="https://fonts.googleapis.com/css?family=Cutive+Mono" rel="stylesheet" type="text/css">
+	<title>View Scene</title>
+</head>
+
+<body>
+	<a id="titleLink" href="/erotica/">Sex Quest!</a> 
+	<a id="login" href="/erotica/login/"> Log In </a>
+	<div class="main">
+		<!-- <h1>Scene Title</h1> -->
+		<p> 
+			By 
+			{% block author %}
+			{% endblock author %}
+		</p>
+
+		<div>
+			{% block story %}
+			{% endblock story %}
+		</div>
+
+		<div class="options">
+			<p>Do you want to...</p>
+			{% for branch in branches %}
+				<div class="branch-bg">
+					<a class="branch-link" href="/erotica/{{ branch.to_scene_id }}/">
+						{% block branch %}
+						{% endblock branch %}
+					</a>
+					<br>
+				</div>
+				<p>or...</p>
+			{% endfor %}
+
+			<div>
+				{% if branches|length >= 2 %}
+				<button id="pick-branch">Pick For Me</button>
+				{% endif %}
+
+			</div>
+		</div>
+
+
+		<div>
+			{% if scene.closed %}
+				<p>This scene is currently closed</p>
+			{% else %}
+				<p>This scene is open</p>
+			{% endif %}
+		</div>
+
+		<div>
+			<a href="/erotica/my-scenes/">View all of my scenes </a>
+			<a href="/erotica/{{ scene.id }}/edit/">Edit this scene</a>
+		</div>
+
+		
+		<a href="/erotica/new-scene/">Create a new scene </a>
+		<a href="/erotica/{{ scene.id }}/branch/">Create a branch from this scene</a>
+		<a href="/erotica/logout/"> Log out </a>
+
+	</div>
+</body>
+	<script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+	<script type="text/javascript" src="{% static "story/js/app.js" %}"></script>
+</html>

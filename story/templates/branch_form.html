@@ -1,0 +1,38 @@
+
+<form action="" method="post">{% csrf_token %}
+	{{ form.non_field_errors }}
+    <!-- {{ form.as_p }} -->
+    <div>
+    	{{ form.from_scene.errors }}
+    	{{ form.from_scene.label_tag }}
+    		<select name="from_scene">
+    			{% for scene in scenes %}
+    				<option value="{{ scene.id }}"
+    					{% if scene.id == defval.id %}
+    						selected="selected"
+    					{% endif %}
+    					>
+    					{{ scene.story_text|truncatechars:100 }}	
+    				</option>
+    			{% endfor %}
+    		</select>
+    	</label>
+    </div>
+
+    <div>
+    	{{ form.to_scene.errors }}
+    	{{ form.to_scene.label_tag }}
+    		<select name="to_scene">
+    			<option value="" selected="selected">---</option>
+    			{% for scene in scenes %}
+    				<option value="{{ scene.id }}">{{ scene.story_text|truncatechars:100 }}</option>
+    			{% endfor %}
+    		</select>
+    </div>
+
+    {{ form.description.errors }}
+    {{ form.description.label_tag }}
+    {{ form.description }}
+
+    <input type="submit" value="Save" />
+</form>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "story/css/style.css" %}"/>
+<h1>Starting points </h1>
+{% if scenes %}
+    <ul>
+    {% for branch in branches %}
+        <li><a href="/erotica/{{ branch.to_scene_id }}/">Follow me</a></li>
+        <p>{{ branch.description }}</p>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>This shouldnt asppear.</p>
+{% endif %}
+<a href="/erotica/my-scenes/">View all of my scenes </a>
+<a href="/erotica/new-scene/">Create a new scene </a>
+<a href="/erotica/login/">Log in</a>
+<a href="/erotica/logout/">Log out</a>

@@ -1,0 +1,1 @@
+web: gunicorn erotica.wsgi --log-file -
